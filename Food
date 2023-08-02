@@ -1,0 +1,114 @@
+class User:
+    def __init__(self, user_id, name, contact_details):
+        self.user_id = user_id
+        self.name = name
+        self.contact_details = contact_details
+        self.orders = []
+
+    def place_order(self, order):
+        self.orders.append(order)
+
+
+class Restaurant:
+    def __init__(self, restaurant_id, name, contact_details, menu):
+        self.restaurant_id = restaurant_id
+        self.name = name
+        self.contact_details = contact_details
+        self.menu = menu
+
+
+class MenuItem:
+    def __init__(self, item_id, name, description, price, ingredients, allergens):
+        self.item_id = item_id
+        self.name = name
+        self.description = description
+        self.price = price
+        self.ingredients = ingredients
+        self.allergens = allergens
+
+
+class Order:
+    def __init__(self, order_id, user, restaurant, delivery_address):
+        self.order_id = order_id
+        self.user = user
+        self.restaurant = restaurant
+        self.delivery_address = delivery_address
+        self.items = []
+        self.total_cost = 0.0
+        self.status = "Pending"
+
+    def add_item(self, menu_item, quantity=1):
+        self.items.append((menu_item, quantity))
+        self.total_cost += menu_item.price * quantity
+
+    def calculate_total_cost(self):
+        self.total_cost = sum(item[0].price * item[1] for item in self.items)
+
+    def process_order(self):
+        # Simulate processing the order (e.g., payment, delivery, etc.)
+        self.status = "Processing"
+
+    def deliver_order(self):
+        # Simulate delivering the order
+        self.status = "Delivered"
+
+
+class Payment:
+    def __init__(self, payment_id, order, amount, method):
+        self.payment_id = payment_id
+        self.order = order
+        self.amount = amount
+        self.method = method
+        self.status = "Pending"
+
+    def process_payment(self):
+        # Simulate processing the payment
+        self.status = "Paid"
+
+
+class DeliveryDriver:
+    def __init__(self, driver_id, name, contact_details):
+        self.driver_id = driver_id
+        self.name = name
+        self.contact_details = contact_details
+
+
+class DeliveryAddress:
+    def __init__(self, recipient_name, address, contact_number, special_instructions=None):
+        self.recipient_name = recipient_name
+        self.address = address
+        self.contact_number = contact_number
+        self.special_instructions = special_instructions
+
+
+# Example usage:
+if __name__ == "__main__":
+    # Create users, restaurants, menu items, and drivers (omitting details for simplicity)
+
+    # Create a user
+    user1 = User("user001", "John Doe", "john@example.com")
+
+    # Create a restaurant
+    restaurant1 = Restaurant("rest001", "Delicious Eats", "restaurant@example.com", menu)
+
+    # Create menu items
+    item1 = MenuItem("item001", "Cheeseburger", "Juicy beef patty with cheese", 8.99, ["beef", "cheese"], ["gluten"])
+    item2 = MenuItem("item002", "Caesar Salad", "Fresh greens with Caesar dressing", 5.99, ["lettuce", "croutons"], [])
+
+    # Create a delivery address
+    delivery_address = DeliveryAddress("John Doe", "123 Main St", "+123456789", "Ring the bell twice")
+
+    # Place an order
+    order1 = Order("order001", user1, restaurant1, delivery_address)
+    order1.add_item(item1, 2)
+    order1.add_item(item2)
+    order1.calculate_total_cost()
+
+    # Process payment
+    payment1 = Payment("payment001", order1, order1.total_cost, "Credit Card")
+    payment1.process_payment()
+
+    # Assign a driver and deliver the order
+    driver1 = DeliveryDriver("driver001", "Mike Smith", "+987654321")
+    order1.process_order()
+    order1.deliver_order()
